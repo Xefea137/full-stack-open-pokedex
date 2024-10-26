@@ -34,6 +34,7 @@ jobs:
 
   tag_release:
     needs: [simple_deployment_pipeline]
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-20.04
     permissions:
       contents: write
@@ -42,10 +43,9 @@ jobs:
       with:
         fetch-depth: '0'
     - name: Bump version and push tag
-      if: ${{ github.event_name == 'push' }}
       uses: anothrNick/github-tag-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
         DEFAULT_BUMP: patch
-        DRY_RUN: true
+        DRY_RUN: false
