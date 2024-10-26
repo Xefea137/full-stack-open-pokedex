@@ -32,6 +32,23 @@ jobs:
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ''), '#skip') }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
 
+      - name: Test Success
+        uses: stegzilla/discord-notify@v2
+        if: success()
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          title: A new version of Pokedex deployed
+          message: "to https://pokedex-small.onrender.com/ by ${{ github.actor }}"
+          colour: "#00FF00"
+      - name: Test Failure
+        uses: stegzilla/discord-notify@v2
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          title: Build failed
+          message: "commit [${{ github.repository_url }}/commit/${{ github.sha }}] by ${{ github.actor }} broke the build :("
+          colour: "#FF0000"
+
   tag_release:
     needs: [simple_deployment_pipeline]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ''), '#skip') }}
