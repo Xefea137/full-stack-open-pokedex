@@ -1,9 +1,9 @@
 name: Health check
 
 on:
-  # push:
-  schedule:
-    - cron: "*/30 * * * *"
+  push:
+  # schedule:
+    # - cron: "*/30 * * * *"
 
 jobs:
   periodic_health_check:
