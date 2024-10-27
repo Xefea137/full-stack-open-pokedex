@@ -1,7 +1,7 @@
 name: Health check
 
 on:
-  push:
+  # push:
   schedule:
     - cron: "*/30 * * * *"
 
